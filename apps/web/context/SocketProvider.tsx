@@ -29,7 +29,7 @@ export const useSocket = () => {
 const SocketProvider: React.FC<ISocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket>();
   const [messages, setMessages] = useState<string[]>(
-    JSON.parse(localStorage.getItem("messages") || "[]")
+    JSON.parse(window.localStorage.getItem("messages") || "[]")
   );
 
   const onMessageRec = useCallback((msg: string) => {
