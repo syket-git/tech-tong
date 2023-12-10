@@ -19,6 +19,7 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
+      <link rel="shortcut icon" href="/techTong.ico" type="image/x-icon" />
       <SocketProvider>
         <body className={inter.className}>{children}</body>
       </SocketProvider>

@@ -1,4 +1,5 @@
 "use client";
+
 import React, {
   createContext,
   useCallback,
@@ -27,13 +28,20 @@ export const useSocket = () => {
 
 const SocketProvider: React.FC<ISocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket>();
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<string[]>(
+    JSON.parse(localStorage.getItem("messages") || "[]")
+  );
 
   const onMessageRec = useCallback((msg: string) => {
-    console.log(`New msg received: ${msg}`);
-    const { message } = JSON.parse(msg) as { message: string };
-    setMessages((prevM) => [...prevM, message]);
+    if (msg) {
+      const { message } = JSON.parse(msg) as { message: string };
+      setMessages((prevM) => [...prevM, message]);
+    }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("messages", JSON.stringify(messages));
+  }, [messages]);
 
   const sendMessage: ISocketContext["sendMessage"] = useCallback(
     (msg: string) => {
@@ -54,6 +62,7 @@ const SocketProvider: React.FC<ISocketProviderProps> = ({ children }) => {
       _socket.disconnect();
       _socket.off("message", onMessageRec);
       setSocket(undefined);
+      // localStorage.removeItem("messages");
     };
   }, []);
 

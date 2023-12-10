@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 import http from "http";
 import SocketService from "./services/socket";
 
