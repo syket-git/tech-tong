@@ -44,7 +44,9 @@ const SocketProvider: React.FC<ISocketProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("messages", JSON.stringify(messages));
+    if (messages?.length > 0) {
+      localStorage.setItem("messages", JSON.stringify(messages));
+    }
   }, [messages]);
 
   const sendMessage: ISocketContext["sendMessage"] = useCallback(
@@ -57,7 +59,8 @@ const SocketProvider: React.FC<ISocketProviderProps> = ({ children }) => {
   );
 
   useEffect(() => {
-    const _socket = io("http://localhost:8000");
+    const _socket = io("https://scalable-chat-production.up.railway.app");
+    console.log({ _socket });
     _socket.on("message", onMessageRec);
     setSocket(_socket);
 
