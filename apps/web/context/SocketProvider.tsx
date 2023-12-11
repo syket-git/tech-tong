@@ -28,9 +28,13 @@ export const useSocket = () => {
 
 const SocketProvider: React.FC<ISocketProviderProps> = ({ children }) => {
   const [socket, setSocket] = useState<Socket>();
-  const [messages, setMessages] = useState<string[]>(
-    JSON.parse(window.localStorage.getItem("messages") || "[]")
-  );
+  const [messages, setMessages] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (window && window !== undefined) {
+      setMessages(JSON.parse(window.localStorage.getItem("messages") || "[]"));
+    }
+  }, []);
 
   const onMessageRec = useCallback((msg: string) => {
     if (msg) {
